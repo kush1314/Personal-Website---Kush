@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -6,64 +5,117 @@ export default function About() {
   const nav = useNavigate();
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-8 py-16">
+    <div className="min-h-screen bg-slate-950 text-slate-100">
+      <div className="max-w-6xl mx-auto px-6 py-16">
 
-        <div className="mb-8">
+        <div className="mb-10 flex flex-col gap-8">
           <button
             onClick={() => nav('/?menu=true')}
-            className="text-gray-600 hover:text-gray-900 mb-8 flex items-center gap-2"
+            className="text-slate-300 hover:text-white inline-flex items-center gap-2"
             style={{ fontFamily: 'Inter, sans-serif' }}
           >
             ← Back
           </button>
 
-          <h1 className="text-4xl font-normal text-gray-900 mb-6" style={{ fontFamily: 'Inter, sans-serif' }}>
-            About
-          </h1>
-        </div>
+          <div className="rounded-[36px] border border-emerald-500/20 bg-slate-900/80 p-8 shadow-[0_30px_80px_rgba(16,185,129,0.14)] backdrop-blur-lg">
+            <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] items-center">
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+                className="rounded-[32px] border border-emerald-400/30 bg-slate-950 p-4 shadow-2xl shadow-emerald-500/10"
+              >
+                <div className="overflow-hidden rounded-[28px] border border-emerald-400/25 bg-black">
+                  <img
+                    src="/assets/about-photo.png"
+                    alt="About me"
+                    className="w-full object-cover transition duration-500 hover:scale-105"
+                  />
+                </div>
+              </motion.div>
 
-        <div className="prose prose-lg max-w-none">
-          <p className="text-gray-700 leading-relaxed mb-8" style={{ fontFamily: 'Inter, sans-serif' }}>
-            I'm a developer and designer who loves creating digital experiences that are both beautiful and functional.
-            Currently focused on frontend development with React, TypeScript, and modern design tools.
-          </p>
-
-          <h2 className="text-2xl font-normal text-gray-900 mb-6 mt-12" style={{ fontFamily: 'Inter, sans-serif' }}>
-            Skills
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {[
-              {
-                title: "Frontend",
-                skills: ["React", "TypeScript", "Next.js", "Tailwind CSS"]
-              },
-              {
-                title: "Design",
-                skills: ["Figma", "UI/UX", "Prototyping", "Adobe XD"]
-              },
-              {
-                title: "Tools",
-                skills: ["Git", "VS Code", "Node.js", "MongoDB"]
-              }
-            ].map((category) => (
-              <div key={category.title}>
-                <h3 className="font-medium text-gray-900 mb-3" style={{ fontFamily: 'Inter, sans-serif' }}>
-                  {category.title}
-                </h3>
-                <div className="space-y-2">
-                  {category.skills.map((skill) => (
-                    <div key={skill} className="text-gray-600" style={{ fontFamily: 'Inter, sans-serif' }}>
-                      {skill}
+              <motion.div
+                initial={{ x: 30, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
+                className="space-y-6"
+              >
+                <p className="text-sm uppercase tracking-[0.28em] text-emerald-300">About Me</p>
+                <h1 className="text-4xl font-semibold text-white" style={{ fontFamily: 'Inter, sans-serif' }}>
+                  I love computer science and engineering.
+                </h1>
+                <p className="text-slate-300 leading-relaxed text-lg" style={{ fontFamily: 'Inter, sans-serif' }}>
+                  I build polished, interactive experiences that combine thoughtful engineering with clean design. My focus is on making products that feel smart, dependable, and memorable.
+                </p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {[
+                    { label: 'Passion', value: 'CS + Engineering' },
+                    { label: 'Style', value: 'Interactive polish' },
+                    { label: 'Stack', value: 'React, Vite, Tailwind' },
+                    { label: 'Vision', value: 'Recruiter-ready impact' }
+                  ].map((item) => (
+                    <div
+                      key={item.label}
+                      className="rounded-3xl border border-emerald-500/20 bg-slate-900/80 p-5"
+                    >
+                      <p className="text-xs uppercase tracking-[0.2em] text-emerald-400">{item.label}</p>
+                      <p className="mt-3 text-sm text-slate-100">{item.value}</p>
                     </div>
                   ))}
                 </div>
-              </div>
-            ))}
+              </motion.div>
+            </div>
           </div>
         </div>
 
+        <div className="grid gap-10 lg:grid-cols-[1.6fr_1fr]">
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
+            className="rounded-[36px] border border-emerald-500/20 bg-slate-900/80 p-8 shadow-2xl shadow-emerald-500/10"
+          >
+            <h2 className="text-3xl font-semibold text-white mb-6" style={{ fontFamily: 'Inter, sans-serif' }}>
+              Why this section stands out
+            </h2>
+            <p className="text-slate-300 leading-relaxed mb-6" style={{ fontFamily: 'Inter, sans-serif' }}>
+              This layout is built to impress recruiters with clean structure, bold messaging, and a polished visual tone. It signals that you care about both engineering quality and user experience.
+            </p>
+            <div className="space-y-4">
+              {[
+                'Interactive motion and bold visual hierarchy',
+                'Strong messaging around computer science and engineering',
+                'Room for a future video walkthrough without clutter',
+                'Refined visuals that show care for brand and detail'
+              ].map((item) => (
+                <div key={item} className="rounded-3xl bg-slate-950/80 p-5 border border-slate-800">
+                  <p className="text-slate-200 text-sm leading-relaxed">{item}</p>
+                </div>
+              ))}
+            </div>
+          </motion.section>
+
+          <motion.aside
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.25 }}
+            className="rounded-[36px] border border-emerald-500/20 bg-slate-900/80 p-8 shadow-2xl shadow-emerald-500/10"
+          >
+            <p className="text-emerald-400 uppercase tracking-[0.28em] text-xs mb-4">Highlight</p>
+            <h3 className="text-2xl font-semibold text-white mb-4" style={{ fontFamily: 'Inter, sans-serif' }}>
+              I love computer science and engineering.
+            </h3>
+            <p className="text-slate-300 leading-relaxed mb-6" style={{ fontFamily: 'Inter, sans-serif' }}>
+              This page is ready for a strong recruiter impression: polished visuals, an interactive hero image, and a clear message about your technical strengths.
+            </p>
+            <div className="rounded-3xl border border-emerald-500/10 bg-slate-950/90 p-5">
+              <p className="text-slate-100 text-sm font-medium">Future video placeholder</p>
+              <p className="mt-3 text-slate-400 text-sm leading-relaxed">
+                When you add a video link, this section will be a great place to feature it among your skills and personal story.
+              </p>
+            </div>
+          </motion.aside>
+        </div>
       </div>
     </div>
   );

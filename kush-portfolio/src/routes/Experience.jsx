@@ -6,25 +6,24 @@ export default function Experience() {
 
   const experiences = [
     {
-      title: "Frontend Developer",
-      company: "TechFlow Solutions",
-      period: "2023 - Present",
-      description: "Leading frontend development initiatives for enterprise-scale applications. Architecting scalable React applications and mentoring junior developers.",
-      skills: ["React", "TypeScript", "Next.js", "Tailwind CSS"]
+      title: "CS128 Course Assistant",
+      company: "University of Illinois Urbana-Champaign",
+      period: "Jan 2025 - May 2025"
     },
     {
-      title: "Junior Developer",
-      company: "Digital Innovations Co",
-      period: "2022 - 2023",
-      description: "Developed responsive web applications and collaborated with design teams to create pixel-perfect user interfaces.",
-      skills: ["JavaScript", "React", "CSS-in-JS", "Storybook"]
+      title: "Synchrony AI Developer Intern",
+      company: "Synchrony",
+      period: "March 2025 - Jan 2026"
     },
     {
-      title: "Web Development Intern",
-      company: "Creative Agency",
-      period: "2021",
-      description: "Started my journey in web development by building marketing websites and learning industry best practices.",
-      skills: ["HTML", "CSS", "JavaScript", "WordPress"]
+      title: "Synchrony AI Intern",
+      company: "Synchrony",
+      period: "Jan 2026 - March 2025"
+    },
+    {
+      title: "Salesforce Software Engineer Intern",
+      company: "Salesforce",
+      period: "May 2026 - Present"
     }
   ];
 
@@ -46,40 +45,33 @@ export default function Experience() {
           </h1>
         </div>
 
-        <div className="space-y-12">
-          {experiences.map((exp, index) => (
-            <div key={index} className="border-b border-gray-100 pb-12 last:border-b-0">
-              <div className="flex justify-between items-start mb-4">
+        <div className="relative">
+          {/* Timeline line */}
+          <div className="absolute left-8 top-0 bottom-0 w-1 bg-gray-200"></div>
+
+          <div className="space-y-12">
+            {experiences.map((exp, index) => (
+              <div key={index} className="relative pl-24">
+                {/* Timeline dot */}
+                <div className="absolute left-0 w-16 flex justify-center">
+                  <div className="w-4 h-4 rounded-full bg-gray-900 mt-2 ring-4 ring-white"></div>
+                </div>
+
+                {/* Content */}
                 <div>
                   <h2 className="text-2xl font-normal text-gray-900 mb-1" style={{ fontFamily: 'Inter, sans-serif' }}>
                     {exp.title}
                   </h2>
-                  <p className="text-lg text-gray-600" style={{ fontFamily: 'Inter, sans-serif' }}>
+                  <p className="text-lg text-gray-600 mb-2" style={{ fontFamily: 'Inter, sans-serif' }}>
                     {exp.company}
                   </p>
+                  <p className="text-gray-500 text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
+                    {exp.period}
+                  </p>
                 </div>
-                <span className="text-gray-500 text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
-                  {exp.period}
-                </span>
               </div>
-
-              <p className="text-gray-700 leading-relaxed mb-6" style={{ fontFamily: 'Inter, sans-serif' }}>
-                {exp.description}
-              </p>
-
-              <div className="flex flex-wrap gap-2">
-                {exp.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded"
-                    style={{ fontFamily: 'Inter, sans-serif' }}
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
       </div>
