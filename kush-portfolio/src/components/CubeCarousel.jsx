@@ -4,9 +4,11 @@ import { Html } from '@react-three/drei'
 import { motion, AnimatePresence } from 'framer-motion'
 import * as THREE from 'three'
 
-// Bright neon green like Minecraft
-const CUBE_GREEN = '#00ff00'
-const CUBE_GREEN_DARK = '#00dd00'
+// Darker, richer video-game green (less neon)
+const CUBE_GREEN = '#3fb950'
+const CUBE_GREEN_DARK = '#2ea043'
+// Darker still, used for text/UI so type never looks washed-out bright
+const GREEN_TEXT = '#1a7f37'
 
 function CubeCarousel() {
   const [selectedCube, setSelectedCube] = useState(null)
@@ -475,11 +477,12 @@ function GridCube({ cube, index, totalCubes, isCenter, isSelected, onSelect }) {
       <group ref={labelRef}>
         <Html center>
           <div
-            className="px-3 py-1 rounded text-sm font-semibold whitespace-nowrap pointer-events-none shadow-lg border-2"
+            className="pixel-text px-3 py-2 rounded whitespace-nowrap pointer-events-none shadow-lg border-2"
             style={{
               backgroundColor: 'white',
-              color: CUBE_GREEN_DARK,
-              borderColor: CUBE_GREEN
+              color: GREEN_TEXT,
+              borderColor: CUBE_GREEN,
+              fontSize: '9px'
             }}
           >
             {cube.id}
@@ -494,7 +497,7 @@ function ControlPanel() {
   return (
     <div
       className="absolute top-4 left-4 bg-white border-2 rounded p-4 text-xs font-mono shadow-lg max-w-xs"
-      style={{ borderColor: CUBE_GREEN, color: CUBE_GREEN_DARK }}
+      style={{ borderColor: CUBE_GREEN, color: GREEN_TEXT }}
     >
       <div className="space-y-1">
         <div><span className="font-bold">A/D or ← →</span> – Rotate carousel</div>
@@ -509,6 +512,19 @@ function ControlPanel() {
 }
 
 function AboutPanel({ onClose }) {
+  const photos = [
+    '/life/life-1.jpg',
+    '/life/life-2.jpg',
+    '/life/life-3.jpg',
+    '/life/life-4.jpg',
+    '/life/life-5.jpg',
+    '/life/life-6.jpg',
+    '/life/life-7.jpg',
+    '/life/life-8.jpg',
+    '/life/life-9.jpg'
+  ]
+  const [lightbox, setLightbox] = useState(null)
+
   return (
     <>
       <motion.div
@@ -526,25 +542,60 @@ function AboutPanel({ onClose }) {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{ duration: 0.3 }}
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 rounded-2xl shadow-2xl p-8 w-full max-w-md"
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 rounded-2xl shadow-2xl p-8 w-full max-w-2xl max-h-[85vh] overflow-y-auto"
         style={{ zIndex: 10000 }}
         onClick={(e) => e.stopPropagation()}
       >
         <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-2xl font-bold hover:opacity-70 transition text-white">×</button>
-        <h2 className="text-2xl font-bold mb-6 text-white">My Life</h2>
-        
-        <div className="space-y-4">
-          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: CUBE_GREEN }}>Philosophy</h3>
-            <p className="text-gray-300 text-sm">The intersection of design, engineering, and creative problem-solving. Every project reflects thoughtful exploration and technical excellence.</p>
-          </div>
+        <h2 className="pixel-text text-xl mb-6 text-white">My Life</h2>
 
-          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: CUBE_GREEN }}>Passion</h3>
-            <p className="text-gray-300 text-sm">I love computer science and engineering, and I build polished, interactive experiences that blend design with solid technical systems.</p>
+        <div className="space-y-5">
+          <p className="text-gray-200 text-base">I love building things :)</p>
+
+          <div>
+            <div className="grid grid-cols-3 gap-2">
+              {photos.map((src, i) => (
+                <button
+                  key={i}
+                  onClick={() => setLightbox(src)}
+                  className="aspect-square overflow-hidden rounded-lg border border-gray-700 group"
+                >
+                  <img
+                    src={src}
+                    alt={`Moment ${i + 1}`}
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                  />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </motion.div>
+
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setLightbox(null)}
+            className="fixed inset-0 flex items-center justify-center bg-black/80 p-6"
+            style={{ zIndex: 10001 }}
+          >
+            <motion.img
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              src={lightbox}
+              alt="Enlarged"
+              className="max-w-full max-h-full rounded-xl shadow-2xl object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }
@@ -574,7 +625,7 @@ function AboutMePanel({ onClose }) {
         <div className="mb-6 flex justify-center">
           <img src="/about-me.jpg" alt="About Me" className="w-48 h-auto rounded-xl object-cover shadow-lg" style={{ maxHeight: '280px' }} />
         </div>
-        <h2 className="text-lg font-bold mb-3 text-center" style={{ color: CUBE_GREEN_DARK }}>Hi! I'm Kush</h2>
+        <h2 className="pixel-text text-sm mb-4 text-center" style={{ color: GREEN_TEXT }}>Hi! I'm Kush</h2>
         <p className="text-gray-700 leading-relaxed text-sm mb-2">Hi! My name is Kush Patel and I'm an incoming Junior at UIUC studying CS + Econ, with a minor in statistics. I love computer science and building new products.</p>
         <p className="text-gray-700 leading-relaxed text-sm">Some of my passions including hackathons, basketball, movies, and pickleball!</p>
       </motion.div>
@@ -584,10 +635,10 @@ function AboutMePanel({ onClose }) {
 
 function ExperiencePanel({ onClose }) {
   const experiences = [
-    { title: 'Salesforce Software Engineer Intern', company: 'Salesforce', period: 'May 2026 - Present' },
-    { title: 'Synchrony AI Intern', company: 'Synchrony', period: 'Jan 2026 - March 2025' },
-    { title: 'Synchrony AI Developer Intern', company: 'Synchrony', period: 'March 2025 - Jan 2026' },
-    { title: 'CS128 Course Assistant', company: 'UIUC', period: 'Jan 2025 - May 2025' }
+    { title: 'Salesforce Software Engineer Intern', company: 'Salesforce', period: 'May 2026 - Present', logo: '/logos/salesforce.png' },
+    { title: 'Synchrony AI Intern', company: 'Synchrony', period: 'Jan 2026 - March 2025', logo: '/logos/synchrony.png' },
+    { title: 'Synchrony AI Developer Intern', company: 'Synchrony', period: 'March 2025 - Jan 2026', logo: '/logos/synchrony.png' },
+    { title: 'CS128 Course Assistant', company: 'UIUC', period: 'Jan 2025 - May 2025', logo: '/logos/uiuc.png' }
   ]
 
   return (
@@ -606,29 +657,209 @@ function ExperiencePanel({ onClose }) {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{ duration: 0.3 }}
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl p-8 w-full max-w-2xl max-h-96 overflow-y-auto"
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl p-8 w-full max-w-2xl max-h-[85vh] overflow-y-auto"
         style={{ zIndex: 10000 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-2xl font-bold hover:opacity-70 transition" style={{ color: CUBE_GREEN }}>×</button>
-        <h2 className="text-2xl font-bold mb-6" style={{ color: CUBE_GREEN_DARK }}>My Experience</h2>
-        
-        <div className="relative">
-          <div className="absolute left-8 top-0 bottom-0 w-1 bg-gray-200"></div>
-          <div className="space-y-8">
-            {experiences.map((exp, index) => (
-              <div key={index} className="relative pl-24">
-                <div className="absolute left-0 w-16 flex justify-center">
-                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: CUBE_GREEN }}></div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold" style={{ color: CUBE_GREEN_DARK }}>{exp.title}</h3>
-                  <p className="text-gray-600">{exp.company}</p>
-                  <p className="text-sm text-gray-500">{exp.period}</p>
-                </div>
+        <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-2xl font-bold hover:opacity-70 transition" style={{ color: GREEN_TEXT }}>×</button>
+        <h2 className="pixel-text text-lg mb-8" style={{ color: GREEN_TEXT }}>My Experience</h2>
+
+        <div className="space-y-4">
+          {experiences.map((exp, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 hover:shadow-md transition"
+            >
+              <div className="flex-shrink-0 w-16 h-16 rounded-lg border border-gray-200 bg-white flex items-center justify-center p-2">
+                <img src={exp.logo} alt={exp.company} className="max-w-full max-h-full object-contain" />
               </div>
+              <div>
+                <h3 className="text-base font-bold text-gray-900">{exp.title}</h3>
+                <p className="font-medium" style={{ color: GREEN_TEXT }}>{exp.company}</p>
+                <p className="text-sm text-gray-500">{exp.period}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    </>
+  )
+}
+
+function ProjectCard({ project, onOpen }) {
+  const hasImages = project.images && project.images.length > 0
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 hover:shadow-lg hover:-translate-y-0.5 transition overflow-hidden flex flex-col">
+      {hasImages ? (
+        <div className="overflow-hidden bg-gray-100">
+          <ProjectGallery images={project.images} title={project.title} variant="card" />
+        </div>
+      ) : (
+        <div
+          className="aspect-video flex items-center justify-center pixel-text text-white text-center px-4"
+          style={{ background: `linear-gradient(135deg, ${CUBE_GREEN}, ${GREEN_TEXT})`, fontSize: '11px' }}
+        >
+          {project.title}
+        </div>
+      )}
+
+      <div className="p-4 flex flex-col flex-1">
+        <h3 className="pixel-text mb-2" style={{ color: GREEN_TEXT, fontSize: '11px', lineHeight: 1.5 }}>{project.title}</h3>
+        <p className="text-sm text-gray-700 flex-1">{project.short}</p>
+        <button
+          onClick={() => onOpen(project)}
+          className="mt-4 self-start text-sm font-semibold px-4 py-2 rounded-lg text-white transition hover:opacity-90"
+          style={{ backgroundColor: GREEN_TEXT }}
+        >
+          Learn more
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function ProjectGallery({ images, title, variant = 'full' }) {
+  const scrollRef = useRef(null)
+  const isCard = variant === 'card'
+
+  const scrollBy = (e, dir) => {
+    e.stopPropagation()
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: dir * scrollRef.current.clientWidth, behavior: 'smooth' })
+    }
+  }
+
+  const imgClass = isCard
+    ? 'snap-center shrink-0 w-full aspect-video object-cover'
+    : 'snap-center shrink-0 w-full h-auto max-h-[420px] object-contain rounded-xl bg-gray-50 border border-gray-200'
+
+  const arrowClass = isCard
+    ? 'w-7 h-7 text-base'
+    : 'w-9 h-9 text-lg'
+
+  return (
+    <div className={isCard ? 'relative group' : 'relative'}>
+      <div
+        ref={scrollRef}
+        className={`flex gap-0 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar ${isCard ? '' : 'gap-3 rounded-xl'}`}
+      >
+        {images.map((src, i) => (
+          <img
+            key={i}
+            src={src}
+            alt={`${title} screenshot ${i + 1}`}
+            loading="lazy"
+            className={imgClass}
+          />
+        ))}
+      </div>
+
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={(e) => scrollBy(e, -1)}
+            className={`absolute left-2 top-1/2 -translate-y-1/2 ${arrowClass} rounded-full bg-white/90 border border-gray-200 shadow flex items-center justify-center font-bold hover:bg-white transition ${isCard ? 'opacity-0 group-hover:opacity-100' : ''}`}
+            style={{ color: GREEN_TEXT }}
+            aria-label="Previous image"
+          >
+            ‹
+          </button>
+          <button
+            onClick={(e) => scrollBy(e, 1)}
+            className={`absolute right-2 top-1/2 -translate-y-1/2 ${arrowClass} rounded-full bg-white/90 border border-gray-200 shadow flex items-center justify-center font-bold hover:bg-white transition ${isCard ? 'opacity-0 group-hover:opacity-100' : ''}`}
+            style={{ color: GREEN_TEXT }}
+            aria-label="Next image"
+          >
+            ›
+          </button>
+          {isCard ? (
+            <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1 pointer-events-none">
+              {images.map((_, i) => (
+                <span key={i} className="w-1.5 h-1.5 rounded-full bg-white/80 shadow" />
+              ))}
+            </div>
+          ) : (
+            <div className="mt-2 text-center text-xs text-gray-400">Scroll or use the arrows to see more ({images.length} photos)</div>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
+
+function ProjectDetailModal({ project, onClose }) {
+  const hasImages = project.images && project.images.length > 0
+
+  return (
+    <>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        onClick={onClose}
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm"
+        style={{ zIndex: 10001 }}
+      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.85 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[88vh] overflow-y-auto"
+        style={{ zIndex: 10002 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="sticky top-0 float-right z-10 m-4 w-9 h-9 flex items-center justify-center text-2xl font-bold rounded-full bg-white/90 border border-gray-200 shadow hover:opacity-70 transition"
+          style={{ color: GREEN_TEXT }}
+        >
+          ×
+        </button>
+
+        <div className="p-8 pt-6">
+          <h2 className="pixel-text mb-6" style={{ color: GREEN_TEXT, fontSize: '16px', lineHeight: 1.5 }}>{project.title}</h2>
+
+          {hasImages && (
+            <div className="mb-6">
+              <ProjectGallery images={project.images} title={project.title} />
+            </div>
+          )}
+
+          <div className="space-y-4">
+            {project.desc.map((paragraph, i) => (
+              <p key={i} className="text-sm text-gray-700 leading-relaxed">{paragraph}</p>
             ))}
           </div>
+
+          <div className="mt-6">
+            <h4 className="pixel-text mb-3 text-gray-500" style={{ fontSize: '9px' }}>Technologies</h4>
+            <div className="flex flex-wrap gap-2">
+              {project.tech.map((tech, i) => (
+                <span
+                  key={i}
+                  className="text-xs font-medium px-2.5 py-1 rounded-md border"
+                  style={{ borderColor: CUBE_GREEN, color: GREEN_TEXT, backgroundColor: '#f2fbf4' }}
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {project.link && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-6 text-sm font-semibold px-5 py-2.5 rounded-lg text-white transition hover:opacity-90"
+              style={{ backgroundColor: GREEN_TEXT }}
+            >
+              Visit live site →
+            </a>
+          )}
         </div>
       </motion.div>
     </>
@@ -636,16 +867,123 @@ function ExperiencePanel({ onClose }) {
 }
 
 function ProjectsPanel({ onClose }) {
+  const [selected, setSelected] = useState(null)
+
   const projects = [
-    { title: 'SafeStamp', desc: 'My teammate Devanshu Pandya and I built SafeStamp at HackMIT after asking a simple question: how can you actually prove whether an AI-generated image is authentic? Instead of relying on unreliable AI detectors, we built an open-source platform that uses cryptographic LSB watermarking, SHA-256 hashing, and a Flask backend to permanently link AI-generated images to their original prompts, creating a fully verifiable provenance system.' },
-    { title: 'Productifi', desc: 'I built Productifi because I wanted something smarter than a timer telling me to get back to work. Using TensorFlow, MediaPipe, OpenCV, and Gemini AI, it analyzes facial expressions, eye gaze, head pose, and audio in real time to measure focus, detect distractions, and provide personalized coaching throughout each work session.' },
-    { title: 'Starky Interactive', desc: 'At HackIllinois, my team and I built Starky, a smart bulldozer that combines computer vision with embedded systems to improve construction safety. Using OpenCV, an ESP32-CAM, Arduino, and custom hardware, it detects nearby workers in real time, automatically stops the vehicle, activates hazard lights, and assists with autonomous grading.' },
-    { title: 'PilotHelp', desc: 'Coming soon.' },
-    { title: 'Illinois Front Office', desc: 'As a huge college basketball fan, I wanted to build the kind of analytics platform I wish every coaching staff had. Illinois Front Office combines 12 specialized AI agents with ensemble machine learning models, predictive analytics, and custom scouting tools to evaluate transfer portal players, predict transfer success, identify undervalued recruits, and generate professional scouting reports in seconds instead of hours.' },
-    { title: 'Synchrony Shield', desc: 'Built during the Synchrony Corporate Hackathon, Synchrony Shield is a Chrome extension that protects users from accidentally sharing sensitive information online. Using real-time regex detection and client-side processing, it automatically identifies and redacts emails, phone numbers, credit cards, Social Security numbers, and other PII before data ever leaves the browser.' },
-    { title: 'Financial Analysis & News Summarization System', desc: 'I built this platform to make stock research more approachable for everyday investors. It combines real-time market data, NLP-powered news summarization using Hugging Face BART, and Monte Carlo simulations to help users understand both the stories driving a stock and its potential future performance.' },
-    { title: 'MapKit', desc: 'After spending hours learning the Google Maps JavaScript API for my own projects, I built MapKit so others wouldn\'t have to. It provides a collection of reusable templates, from business locators to weather overlays and trip planners, that help developers build mapping applications faster while learning Google\'s mapping ecosystem.' }
+    {
+      title: 'SafeStamp',
+      link: 'https://ai-watermark-detector.onrender.com/',
+      images: ['/projects/safestamp/img-1.jpg', '/projects/safestamp/img-2.jpg', '/projects/safestamp/img-3.jpg'],
+      short: 'An open source platform, built at HackMIT, that proves whether an AI image is real by cryptographically tying every picture back to the prompt that created it.',
+      desc: [
+        'My teammate and I built SafeStamp at HackMIT after running into a problem that felt bigger than a weekend project. Nearly 80 percent of Americans now see AI misinformation as one of the technology\'s top dangers, and when we tested the popular detectors, ChatGPT, Gemini, Hive, and even a custom judge agent we wrote ourselves, none of them cracked much past 80 percent accuracy. Guessing was never going to be good enough, so we went the other direction and made authenticity something you can actually prove.',
+        'SafeStamp embeds an invisible watermark directly into the pixels of an AI generated image using Least Significant Bit encoding. Each watermark is derived from a SHA-256 hash of the original prompt plus a secret key, then stored in a database that maps every image back to the exact prompt that made it. Upload an image later and the system instantly verifies its origin, all without changing anything you can see. Images are generated through Hugging Face\'s FLUX.1-schnell model and served through a Flask API with dedicated encode and verify routes.',
+        'Unlike closed systems like Google SynthID or Meta\'s Stable Signature, SafeStamp is fully open source and built for classrooms, so students and teachers can read the code, watch the watermarking process happen step by step, and understand exactly why detection alone falls short. It is a real provenance system and a teaching tool at the same time.'
+      ],
+      tech: ['Python', 'Flask', 'LSB Watermarking', 'SHA-256', 'SQLite', 'Hugging Face FLUX.1', 'JavaScript', 'Gradio']
+    },
+    {
+      title: 'Productifi',
+      link: null,
+      images: ['/projects/productifi/img-1.jpg', '/projects/productifi/img-2.jpg', '/projects/productifi/img-3.jpg'],
+      short: 'An AI focus companion that reads your camera and microphone in real time to measure how locked in you are and coach you back on track.',
+      desc: [
+        'I built Productifi because I wanted something smarter than a timer nagging me to get back to work. It uses computer vision to track facial expressions, head pose, and eye gaze while you work, scores your attention in real time, and recognizes emotional state to give productivity insights that actually fit the moment. When it notices you looking away or catches a sustained conversation through the Web Audio API, it steps in before a quick glance turns into a lost half hour.',
+        'The coaching layer is powered by Google\'s Gemini Vision API, which delivers live personalized nudges instead of generic reminders. Sessions are fully customizable across modes like Deep Study, Coding Sprint, and Creative Flow, with strict, balanced, and monitor only focus rules and adjustable sensitivity for different environments. A live dashboard tracks attention scores, distraction counts, and streaks, then generates full analytics reports on focus consistency and distraction resistance after each session.',
+        'One design choice I am proud of is that all of the vision processing happens locally in the browser, so nothing leaves your machine. It stays private by default while still feeling like a polished, startup quality product.'
+      ],
+      tech: ['React 19', 'TypeScript', 'TensorFlow.js', 'MediaPipe', 'OpenCV', 'Google Gemini', 'Web Audio API', 'Flask', 'SocketIO', 'Zustand', 'TailwindCSS']
+    },
+    {
+      title: 'Starky Interactive',
+      link: null,
+      images: ['/projects/starky/img-3.jpg', '/projects/starky/img-1.jpg', '/projects/starky/img-2.jpg'],
+      short: 'A smart autonomous bulldozer, built at HackIllinois, that uses computer vision to spot nearby workers and stop itself before anyone gets hurt.',
+      desc: [
+        'At HackIllinois my team and I set out to tackle one of the most dangerous parts of a construction site: heavy machinery operating near people. Starky is a smart bulldozer that pairs computer vision with embedded hardware to add a safety layer that reacts faster than a human operator can.',
+        'An ESP32-CAM streams live video that an OpenCV pipeline analyzes to detect workers entering the danger zone. The moment someone is spotted, Starky automatically stops the vehicle, triggers hazard lights, and holds until the area is clear. On top of the safety system, we built in assisted autonomous grading so the machine can help level terrain on its own.',
+        'The real challenge was bridging the software and the physical world: getting reliable detection off a tiny camera module and translating those decisions into precise, safe hardware control through the Arduino layer under tight hackathon time pressure.'
+      ],
+      tech: ['Python', 'OpenCV', 'ESP32-CAM', 'Arduino', 'Embedded Systems', 'Computer Vision']
+    },
+    {
+      title: 'PilotHelp',
+      link: null,
+      images: ['/projects/pilothelp/img-1.jpg', '/projects/pilothelp/img-2.jpg'],
+      short: 'A wearable headset, and first place winner at the Pulse Hardware Hackathon, that helps people with vision or hearing loss navigate the world around them.',
+      desc: [
+        'A hackathon was happening right in our building, and even though we were already running late, we could not resist dropping everything to join and build something meaningful. We spent almost an hour brainstorming, putting ourselves in the shoes of someone who could not see or hear well and asking what they would actually need to move through a space safely.',
+        'That became PilotHelp, a wearable headset that helps people with vision or hearing loss sense their surroundings. We carefully placed each component: a camera on the front, a distance sensor on the back so it would not block the camera\'s view, and audio and vibration alerts on each side to signal nearby objects. The alerts let a user feel and hear where obstacles are, even if one of those senses is limited.',
+        'To make sure it actually worked, we tested it ourselves by walking through the building with our eyes closed. PilotHelp took first place at the Pulse Hardware Hackathon, and I am proud of it because it was built to make navigating the world a little easier for someone who needs it.'
+      ],
+      tech: ['Hardware', 'Embedded Systems', 'Computer Vision', 'Distance Sensors', 'Haptic Feedback', 'Audio Alerts']
+    },
+    {
+      title: 'Illinois Front Office',
+      link: null,
+      images: [],
+      short: 'An AI scouting platform for the Illinois Basketball Analytics Internship that turns hours of transfer portal research into a decision you can make in seconds.',
+      desc: [
+        'When a player enters the transfer portal, a coaching staff might have 48 hours to decide whether to pursue him, and the data they need is scattered across BartTorvik, Sports Reference, internal spreadsheets, and film notes. As a huge college basketball fan, I built Illinois Front Office to close that gap. You ask a question in plain English and the platform routes it to the right one of 12 specialized agents, covering everything from recruiting boards and risk and fit scoring to hidden gem detection, player comparisons, roster building, scenario simulation, and PDF scouting reports.',
+        'At its core is a prediction model that estimates two things for any player: a transfer success probability and a projected Box Plus/Minus at Illinois. It is an ensemble of a 400 tree Random Forest, an XGBoost model, and a three layer neural network whose outputs are blended into one weighted score. Tested on data it had never seen, it separated likely contributors from busts about 88 percent of the time, and it learned on its own that a big conference jump usually drags production down, without me ever hardcoding that rule.',
+        'Every score is explainable, so a coach can see exactly which stats pushed a player up or down and push back when they disagree. I scraped 200 real Division 1 players from Sports Reference and BartTorvik, using Playwright to get past Cloudflare protection, and trained the model on 3,000 synthetic profiles calibrated to real NCAA distributions, which I label as prototype data honestly throughout the app.'
+      ],
+      tech: ['Next.js 15', 'TypeScript', 'FastAPI', 'Python 3.12', 'scikit-learn', 'XGBoost', 'Random Forest', 'Neural Networks', 'Google Gemini', 'Playwright', 'pandas', 'Plotly.js', 'SQLite']
+    },
+    {
+      title: 'Synchrony Shield',
+      link: 'https://synchronyshield.vercel.app',
+      images: [],
+      short: 'A privacy first Chrome extension that took second place at the Synchrony Corporate Hackathon, catching and redacting sensitive data before it ever leaves your browser.',
+      desc: [
+        'Synchrony Shield came out of the Synchrony Corporate Hackathon, where it earned runner up, and it solves a problem almost everyone has hit: pasting something into a web form and realizing too late that it held sensitive information. The extension watches for personal data and redacts it in real time before any of it can leave the page.',
+        'Instead of leaning on an external AI service, it runs entirely client side using tuned regex patterns, which keeps it fast and means your data never gets shipped somewhere else to be scanned. It detects and masks emails, phone numbers, credit card numbers, Social Security numbers, addresses, and formal names, and lets users pick exactly which categories to redact and add their own custom phrases.',
+        'We paired the extension with a polished marketing site featuring a live interactive demo, a SWOT analysis, and a responsive design, so the whole thing felt like a real product a company could actually ship.'
+      ],
+      tech: ['JavaScript', 'Chrome Extension APIs', 'Regex Pattern Matching', 'HTML', 'CSS']
+    },
+    {
+      title: 'PromptGreen',
+      link: null,
+      images: ['/projects/promptgreen/img-1.jpg', '/projects/promptgreen/img-2.jpg'],
+      short: 'A Chrome extension that won Best AI/Software Project at Dev Season of Code, trimming your AI prompts so they burn fewer tokens and less energy.',
+      desc: [
+        'PromptGreen won Best AI/Software Project at the Dev Season of Code Hackathon. It started from a fact most people never see: every prompt you send to an AI model gets broken into tokens, and more tokens means more computation, which means more electricity drawn inside data centers. As AI use has exploded, that hidden energy cost has quietly ballooned.',
+        'PromptGreen sits in your browser and optimizes prompts before they ever reach the model. It analyzes your text, strips out filler words and redundant phrasing, compresses the intent, and restructures the language to use fewer tokens while keeping your original meaning fully intact. Because the savings compound across thousands or millions of prompts, small cleanups add up to a real reduction in energy use without changing your experience.',
+        'The extension ships with an onboarding flow, a settings panel, and reporting views so you can actually see the tokens and energy you are saving over time. It made the environmental cost of AI visible and gave people a simple way to shrink it.'
+      ],
+      tech: ['JavaScript', 'Chrome Extension APIs', 'Service Workers', 'HTML', 'CSS', 'Tokenization']
+    },
+    {
+      title: 'Financial Analysis & News Summarization System',
+      link: null,
+      images: ['/projects/financial/img-1.jpg', '/projects/financial/img-2.jpg'],
+      short: 'An all in one Python tool that helps beginner investors make smarter calls by combining live news, technical analysis, and thousands of simulated price paths.',
+      desc: [
+        'A friend and I built this because stock research felt intimidating and scattered for anyone just starting out. The tool brings fundamental and technical analysis together in one interactive workflow. Type in any ticker and it pulls 50 recent news articles with short previews, then lets you summarize the ones you care about using Hugging Face\'s BART neural network model so you get the story without reading every word.',
+        'On the technical side it charts historical prices and descriptive statistics like mean, median, and standard deviation, then runs Monte Carlo simulations that generate over 30,000 possible future price paths to show the range of where a stock could realistically go. It pulls live data through NewsAPI and Yahoo Finance and scrapes supporting information with BeautifulSoup.',
+        'The whole thing was designed for accessibility, so someone with almost no investing experience can still walk away understanding both why a stock is moving and what its future might look like.'
+      ],
+      tech: ['Python', 'pandas', 'NumPy', 'matplotlib', 'yfinance', 'Hugging Face BART', 'NewsAPI', 'BeautifulSoup', 'Monte Carlo Simulation', 'scipy']
+    },
+    {
+      title: 'MapKit',
+      link: 'https://dpandaman.github.io/MapKit/index.html',
+      images: ['/projects/mapkit/img-1.jpg', '/projects/mapkit/img-2.jpg'],
+      short: 'A community powered toolkit of prebuilt Google Maps templates, submitted to a Google Hackathon, that helps developers skip the setup and start building.',
+      desc: [
+        'After spending hours wrestling with the Google Maps JavaScript API for my own projects, I built MapKit so other people would not have to fight the same setup. It is a growing collection of plug and play templates and tools that let you get straight to building, whether you are testing an idea or shipping a full product.',
+        'MapKit covers common use cases out of the box, including heat maps, business locators, weather overlays, and trip planners, and offers both web templates and Chrome extension templates. Each one comes with a getting started guide that walks you through generating an API key and dropping it into a simple env file, so there is no guesswork.',
+        'I submitted it to a Google Hackathon as a community built solution, and it is designed so developers can contribute and share their own templates, making the whole thing more beginner friendly over time.'
+      ],
+      tech: ['JavaScript', 'Google Maps JavaScript API', 'Node.js', 'HTML', 'CSS', 'Chrome Extensions']
+    }
   ]
+
+  // Projects with images come first, original order preserved within each group
+  const orderedProjects = [...projects].sort(
+    (a, b) => (b.images?.length > 0 ? 1 : 0) - (a.images?.length > 0 ? 1 : 0)
+  )
 
   return (
     <>
@@ -663,22 +1001,25 @@ function ProjectsPanel({ onClose }) {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{ duration: 0.3 }}
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl p-8 w-full max-w-4xl max-h-96 overflow-y-auto"
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl p-8 w-full max-w-4xl max-h-[85vh] overflow-y-auto"
         style={{ zIndex: 10000 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-2xl font-bold hover:opacity-70 transition" style={{ color: CUBE_GREEN }}>×</button>
-        <h2 className="text-2xl font-bold mb-6" style={{ color: CUBE_GREEN_DARK }}>My Projects</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {projects.map((project, index) => (
-            <div key={index} className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200 hover:shadow-md transition">
-              <h3 className="text-lg font-semibold mb-2" style={{ color: CUBE_GREEN_DARK }}>{project.title}</h3>
-              <p className="text-sm text-gray-700">{project.desc}</p>
-            </div>
+        <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-2xl font-bold hover:opacity-70 transition" style={{ color: GREEN_TEXT }}>×</button>
+        <h2 className="pixel-text text-lg mb-8" style={{ color: GREEN_TEXT }}>My Projects</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-stretch">
+          {orderedProjects.map((project, index) => (
+            <ProjectCard key={index} project={project} onOpen={setSelected} />
           ))}
         </div>
       </motion.div>
+
+      <AnimatePresence>
+        {selected && (
+          <ProjectDetailModal project={selected} onClose={() => setSelected(null)} />
+        )}
+      </AnimatePresence>
     </>
   )
 }
