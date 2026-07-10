@@ -542,15 +542,15 @@ function AboutPanel({ onClose }) {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{ duration: 0.3 }}
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 rounded-2xl shadow-2xl p-8 w-full max-w-2xl max-h-[85vh] overflow-y-auto"
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl p-8 w-full max-w-2xl max-h-[85vh] overflow-y-auto"
         style={{ zIndex: 10000 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-2xl font-bold hover:opacity-70 transition text-white">×</button>
-        <h2 className="pixel-text text-xl mb-6 text-white">My Life</h2>
+        <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-2xl font-bold hover:opacity-70 transition" style={{ color: GREEN_TEXT }}>×</button>
+        <h2 className="pixel-text text-lg mb-6" style={{ color: GREEN_TEXT }}>My Life</h2>
 
         <div className="space-y-5">
-          <p className="text-gray-200 text-base">I love building things :)</p>
+          <p className="text-gray-700 text-base">I love building things :)</p>
 
           <div>
             <div className="grid grid-cols-3 gap-2">
@@ -558,7 +558,7 @@ function AboutPanel({ onClose }) {
                 <button
                   key={i}
                   onClick={() => setLightbox(src)}
-                  className="aspect-square overflow-hidden rounded-lg border border-gray-700 group"
+                  className="aspect-square overflow-hidden rounded-lg border border-gray-200 group"
                 >
                   <img
                     src={src}
@@ -880,7 +880,7 @@ function ProjectsPanel({ onClose }) {
         'SafeStamp embeds an invisible watermark directly into the pixels of an AI generated image using Least Significant Bit encoding. Each watermark is derived from a SHA-256 hash of the original prompt plus a secret key, then stored in a database that maps every image back to the exact prompt that made it. Upload an image later and the system instantly verifies its origin, all without changing anything you can see. Images are generated through Hugging Face\'s FLUX.1-schnell model and served through a Flask API with dedicated encode and verify routes.',
         'Unlike closed systems like Google SynthID or Meta\'s Stable Signature, SafeStamp is fully open source and built for classrooms, so students and teachers can read the code, watch the watermarking process happen step by step, and understand exactly why detection alone falls short. It is a real provenance system and a teaching tool at the same time.'
       ],
-      tech: ['Python', 'Flask', 'LSB Watermarking', 'SHA-256', 'SQLite', 'Hugging Face FLUX.1', 'JavaScript', 'Gradio']
+      tech: ['Machine Learning', 'Python', 'Flask', 'LSB Watermarking', 'SHA-256', 'SQLite', 'Hugging Face FLUX.1', 'Image Classification', 'JavaScript', 'Gradio']
     },
     {
       title: 'Productifi',
@@ -892,7 +892,7 @@ function ProjectsPanel({ onClose }) {
         'The coaching layer is powered by Google\'s Gemini Vision API, which delivers live personalized nudges instead of generic reminders. Sessions are fully customizable across modes like Deep Study, Coding Sprint, and Creative Flow, with strict, balanced, and monitor only focus rules and adjustable sensitivity for different environments. A live dashboard tracks attention scores, distraction counts, and streaks, then generates full analytics reports on focus consistency and distraction resistance after each session.',
         'One design choice I am proud of is that all of the vision processing happens locally in the browser, so nothing leaves your machine. It stays private by default while still feeling like a polished, startup quality product.'
       ],
-      tech: ['React 19', 'TypeScript', 'TensorFlow.js', 'MediaPipe', 'OpenCV', 'Google Gemini', 'Web Audio API', 'Flask', 'SocketIO', 'Zustand', 'TailwindCSS']
+      tech: ['Machine Learning', 'React 19', 'TypeScript', 'TensorFlow.js', 'MediaPipe', 'OpenCV', 'Emotion Recognition', 'Google Gemini', 'Web Audio API', 'Flask', 'SocketIO', 'Zustand', 'TailwindCSS']
     },
     {
       title: 'Starky Interactive',
@@ -904,7 +904,7 @@ function ProjectsPanel({ onClose }) {
         'An ESP32-CAM streams live video that an OpenCV pipeline analyzes to detect workers entering the danger zone. The moment someone is spotted, Starky automatically stops the vehicle, triggers hazard lights, and holds until the area is clear. On top of the safety system, we built in assisted autonomous grading so the machine can help level terrain on its own.',
         'The real challenge was bridging the software and the physical world: getting reliable detection off a tiny camera module and translating those decisions into precise, safe hardware control through the Arduino layer under tight hackathon time pressure.'
       ],
-      tech: ['Python', 'OpenCV', 'ESP32-CAM', 'Arduino', 'Embedded Systems', 'Computer Vision']
+      tech: ['Machine Learning', 'Computer Vision', 'Python', 'OpenCV', 'ESP32-CAM', 'Arduino', 'Embedded Systems', 'Object Detection']
     },
     {
       title: 'PilotHelp',
@@ -928,7 +928,7 @@ function ProjectsPanel({ onClose }) {
         'At its core is a prediction model that estimates two things for any player: a transfer success probability and a projected Box Plus/Minus at Illinois. It is an ensemble of a 400 tree Random Forest, an XGBoost model, and a three layer neural network whose outputs are blended into one weighted score. Tested on data it had never seen, it separated likely contributors from busts about 88 percent of the time, and it learned on its own that a big conference jump usually drags production down, without me ever hardcoding that rule.',
         'Every score is explainable, so a coach can see exactly which stats pushed a player up or down and push back when they disagree. I scraped 200 real Division 1 players from Sports Reference and BartTorvik, using Playwright to get past Cloudflare protection, and trained the model on 3,000 synthetic profiles calibrated to real NCAA distributions, which I label as prototype data honestly throughout the app.'
       ],
-      tech: ['Next.js 15', 'TypeScript', 'FastAPI', 'Python 3.12', 'scikit-learn', 'XGBoost', 'Random Forest', 'Neural Networks', 'Google Gemini', 'Playwright', 'pandas', 'Plotly.js', 'SQLite']
+      tech: ['Machine Learning', 'scikit-learn', 'XGBoost', 'Random Forest', 'Neural Networks', 'Ensemble Models', 'Next.js 15', 'TypeScript', 'FastAPI', 'Python 3.12', 'Google Gemini', 'Playwright', 'pandas', 'Plotly.js', 'SQLite']
     },
     {
       title: 'Synchrony Shield',
@@ -964,7 +964,7 @@ function ProjectsPanel({ onClose }) {
         'On the technical side it charts historical prices and descriptive statistics like mean, median, and standard deviation, then runs Monte Carlo simulations that generate over 30,000 possible future price paths to show the range of where a stock could realistically go. It pulls live data through NewsAPI and Yahoo Finance and scrapes supporting information with BeautifulSoup.',
         'The whole thing was designed for accessibility, so someone with almost no investing experience can still walk away understanding both why a stock is moving and what its future might look like.'
       ],
-      tech: ['Python', 'pandas', 'NumPy', 'matplotlib', 'yfinance', 'Hugging Face BART', 'NewsAPI', 'BeautifulSoup', 'Monte Carlo Simulation', 'scipy']
+      tech: ['Machine Learning', 'NLP', 'Hugging Face BART', 'Python', 'pandas', 'NumPy', 'matplotlib', 'yfinance', 'NewsAPI', 'BeautifulSoup', 'Monte Carlo Simulation', 'scipy']
     },
     {
       title: 'MapKit',
